@@ -1,0 +1,16 @@
+{
+  "repository": "https://github.com/ptitSeb/gl4es",
+  "commit": "a025615bc79ac43ec911dced8fe5b8eb45a0b72d",
+  "archive": "https://codeload.github.com/ptitSeb/gl4es/zip/a025615bc79ac43ec911dced8fe5b8eb45a0b72d",
+  "sha256": "207815fd51f5b155061e9234f804bbbce66c454fc6987173b268d5233b924cf0",
+  "license": "MIT",
+  "files": 191,
+  "subset": [
+    "src",
+    "include",
+    "CMakeLists.txt",
+    "LICENSE",
+    "version.h"
+  ],
+  "version_header_sha256": "76ba529790159538eafd53704a656e317bceee0453e54910f4d3eb2c88b0536b"
+}

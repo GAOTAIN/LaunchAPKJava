@@ -1,0 +1,82 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/libs/lwjgl-3.3.3-natives-release.aar",
+    "sha256": "ec26f2008e5c4b73605d5f401e8f3df8f4e0eb74d2e66fbba7d349a1f530552f",
+    "size": 16269860
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.3.3/lwjgl-3.3.3.jar",
+    "sha256": "dc9c7b2d48e8396d68895f8902ffa01e46253de44dfe927533ff09457ebfeec4",
+    "size": 785029
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-glfw/3.3.3/lwjgl-glfw-3.3.3.jar",
+    "sha256": "bedc757fd2b1b255146db26b74b9cbd1fcf5644b89b47b104fa721c741604259",
+    "size": 135546
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-opengl/3.3.3/lwjgl-opengl-3.3.3.jar",
+    "sha256": "5062da750e5f7ec89e27e8b67b7d40fa8c4b16890159e35f828116ce6c8eca1e",
+    "size": 929192
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-openal/3.3.3/lwjgl-openal-3.3.3.jar",
+    "sha256": "ae0e82767cacf08921f578fba9d84753ddeb00ceada0510a2b4a882be28fbf95",
+    "size": 110586
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-stb/3.3.3/lwjgl-stb-3.3.3.jar",
+    "sha256": "0cff7aa46ea9d70fcc20857015293ea80fbf21adcac34600c84da9b81a44ca93",
+    "size": 120283
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-tinyfd/3.3.3/lwjgl-tinyfd-3.3.3.jar",
+    "sha256": "ee0515054ee19a3f4088426fee9d879eb2ee657b07e5064e4e2c851f6adcf14b",
+    "size": 13400
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/net/java/dev/jna/jna/5.13.0/jna-5.13.0.aar",
+    "sha256": "3a03daf5a7212201c3a9b44f734dfc9babb3addcb5cbfa639f9f535e887925c0",
+    "size": 517278
+  },
+  {
+    "url": "https://raw.githubusercontent.com/java-native-access/jna/5.13.0/LICENSE",
+    "sha256": "521bb271ac56e0e29a1b1b688b94af17d00d378fc8e63478d8c8b2a7c4a229d0",
+    "size": 788
+  },
+  {
+    "url": "https://raw.githubusercontent.com/glfw/glfw/7482de6071d21db77a7236155da44c172a7f6c9e/include/GLFW/glfw3.h",
+    "sha256": "0992a30f01ebaa41c32f3f0588e942961abb8a9a52ca8764bd32ee4d7d71a46d",
+    "size": 215860
+  },
+  {
+    "url": "https://raw.githubusercontent.com/glfw/glfw/7482de6071d21db77a7236155da44c172a7f6c9e/LICENSE.md",
+    "sha256": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+    "size": 904
+  },
+  {
+    "url": "https://codeload.github.com/kcat/openal-soft/zip/d3875f333fb6abe2f39d82caca329414871ae53b",
+    "sha256": "6696ed521b724d697a26bcd5bbd5680411258502c241275af51791e3eca1b79b",
+    "size": 1026678
+  },
+  {
+    "url": "https://raw.githubusercontent.com/java-native-access/jna/5.13.0/AL2.0",
+    "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "size": 10174
+  },
+  {
+    "url": "https://raw.githubusercontent.com/java-native-access/jna/5.13.0/native/libffi/LICENSE",
+    "sha256": "2c9c2acb9743e6b007b91350475308aee44691d96aa20eacef8e199988c8c388",
+    "size": 1132
+  },
+  {
+    "url": "https://raw.githubusercontent.com/java-native-access/jna/5.13.0/native/libffi/LICENSE-BUILDTOOLS",
+    "sha256": "e67978cd18816c0cb7d29aaaacde7b7447402c2fb321a051698890a8eaedda94",
+    "size": 18698
+  },
+  {
+    "url": "https://raw.githubusercontent.com/LWJGL/lwjgl3/3.3.3/modules/lwjgl/stb/src/main/c/stb_image.h",
+    "sha256": "38e08c1c5ab8869ae8d605ddaefa85ad3fea24a2964fd63a099c0c0f79c70bcc",
+    "size": 284733
+  }
+]

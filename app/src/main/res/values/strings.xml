@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LaunchAPK Java</string>
+    <string name="home_subtitle">非官方 Minecraft Java 版启动器</string>
+    <string name="versions_title">游戏版本</string>
+    <string name="versions_description">可在下载中心获取官方游戏文件；游戏启动适配仍待完成。</string>
+    <string name="account_title">微软账号</string>
+    <string name="account_description">在微软账号页配置应用 ID，并通过官方授权登录与验证游戏许可。</string>
+    <string name="controls_title">虚拟按键</string>
+    <string name="controls_description">按键调试已可用，可编辑和保存布局，并查看游玩输入事件。</string>
+    <string name="launch_unavailable">启动游戏（LWJGL 适配待接入）</string>
+    <string name="appearance_title">外观与性能</string>
+    <string name="disable_blur">关闭模糊</string>
+    <string name="blur_description">关闭背景模糊可减少图形开销；低内存设备默认关闭。</string>
+    <string name="blur_reduced">降低透明度已停用模糊；关闭该选项后可恢复模糊设置。</string>
+    <string name="blur_unsupported">此 Android 版本不支持模糊，已自动关闭。</string>
+    <string name="reduce_transparency">降低透明度</string>
+    <string name="transparency_description">提高卡片不透明度，同时停用模糊，提升可读性。</string>
+    <string name="theme_description">浅色与深色外观跟随系统，设置自动保存。</string>
+    <string name="about_title">关于 LaunchAPK Java</string>
+    <string name="about_message">非官方 Minecraft Java 版启动器。支持本地离线账户、资源下载与虚拟按键调试；可进行 JRE/JVM 与 GL4ES 自检；完整游戏启动适配尚未完成。
+
+不附带游戏文件、资源或账号，与 Mojang 或 Microsoft 无关联。</string>
+    <string name="close">关闭</string>
+    <string name="distribution_note">本应用不附带游戏文件、资源或账号。</string>
+</resources>

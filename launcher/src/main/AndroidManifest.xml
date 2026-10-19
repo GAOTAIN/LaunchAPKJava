@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <service android:name="com.launchapk.java.launcher.JvmDiagnosticService" android:exported="false" android:process=":jvm" />
+    </application>
+</manifest>
