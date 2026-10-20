@@ -1,10 +1,20 @@
 # LaunchAPK Java
 
-非官方 Minecraft Java 版启动器。包含横屏玻璃界面、账户与下载管理、可编辑虚拟按键、JRE 导入，以及新接入的 Android LWJGL 3 / GLFW / Surface / GL4ES / OpenAL 游戏执行链。**已具备实际游戏启动入口；尚未在 Android 真机上验证进入 Minecraft 主菜单，不能宣称已可玩。**
+非官方 Minecraft Java 版启动器。包含横屏玻璃界面、账户与下载管理、可编辑虚拟按键、Android Java 自动下载/安装与手动导入，以及 Android LWJGL 3 / GLFW / Surface / GL4ES / OpenAL 游戏执行链。**已具备实际游戏启动入口；尚未在 Android 真机上验证进入 Minecraft 主菜单，不能宣称已可玩。**
+
+## 自动补齐运行环境
+
+下载游戏后，在 **离线 → 选择版本并启动** 选择版本。缺少匹配的 Java 时，启动按钮显示 **补齐 Java 8/17/21 并启动**：点击后按手机的 ARM64/x86_64 架构创建后台下载任务，显示体积与进度，校验固定 SHA-256，安全解压、检查版本与 Android ELF，再替换运行时；成功后在当前前台页面继续启动。取消、下载损坏、错误架构或解包失败不会发布未验证的安装。
+
+也可在 **运行环境** 选择 Java 8、17、21 并点击 **下载并安装**；无需自己寻找 ZIP 或填写校验值。保留原来的手动 ZIP 导入。下载任务可在返回页面后恢复进度，有网络后运行，暂时网络错误最多自动重试两次；只有一个运行时安装任务会被保留。
+
+固定下载源为 FCL 公开的 Android OpenJDK 分包，实际版本为 **1.8.0_442、17.0.10、21.0.1**，并非最新补丁版；清单不跟随 latest，升级需显式更新 SHA-256。JRE 不打包进 APK/GitHub 源码，只由用户在应用中下载；原始 LICENSE/legal 与来源记录保存在私有运行时目录。详见 `docs/AUTOMATIC_RUNTIME.md`。
+
+当前只保留一个激活运行时，同一 Java 主版本可复用已有安装。自动补齐不改变 4KB 内存页、GL4ES OpenGL 2.1、微软会话启动和真机验收等既有边界，也不代表 Minecraft 已验证可玩。
 
 ## 本轮：实际游戏执行入口
 
-首页 **离线 → 选择版本并启动**，选择完成下载的 LWJGL 3 版本，导入对应 Android/Bionic Java 8/17/21 后点击 **启动游戏**。`GameActivity` 在独立 `:game` 进程持有 Surface，后台线程创建 HotSpot 并通过项目自己的 Java 引导类调用版本主类；Minecraft 的主循环持续运行，退出后销毁该进程。
+首页 **离线 → 选择版本并启动**，选择完成下载的 LWJGL 3 版本；缺少对应 Android Java 时点击 **补齐 Java 并启动**，已有匹配运行时则直接点击 **启动游戏**。`GameActivity` 在独立 `:game` 进程持有 Surface，后台线程创建 HotSpot 并通过项目自己的 Java 引导类调用版本主类；Minecraft 的主循环持续运行，退出后销毁该进程。
 
 虚拟按键直接覆盖同一游戏 Surface。空白区域在菜单中定位/点击光标，捕获鼠标后转换为视角位移；WASD、跳跃、潜行、左右键和摇杆经线程安全 JNI 队列进入 GLFW 回调。顶部 **编辑模式** 可拖动、添加、改映射、缩放、调透明度、删除和保存；布局继续使用 `filesDir/controls/default.json`。失焦、取消或退出会释放输入。
 

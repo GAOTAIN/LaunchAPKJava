@@ -4,7 +4,7 @@
 
 ## 使用
 
-1. 安装本轮 Debug APK。下载原版后，在运行环境导入**可信 Android/Bionic** JRE ZIP，校验 SHA-256，先运行既有 Java main 自检。桌面 JRE 不能替代 Android JRE。
+1. 安装本轮 Debug APK。下载原版后，启动页会按所选版本自动匹配 Android Java，缺少时可点击“补齐 Java 并启动”；运行环境页也能选择 8/17/21 自动下载。可选的手动导入仍只接受可信 Android/Bionic JRE。桌面 JRE 不能替代 Android JRE；建议先运行既有 Java main 自检。
 2. 建议先验证 1.16.5 与 Java 8：它使用 LWJGL 3，图形要求更接近当前 GL4ES 的 OpenGL 2.1。当前 GL4ES 不能承诺支持需要 OpenGL 3.2/更高能力的版本与模组。
 3. 首页选择离线档案，点击“选择版本并启动”。准备检查通过后点击“启动游戏”。所有版本文件、资源、运行时和账户都来自用户操作；APK 不包含 Minecraft、JRE 或账户。
 4. 游戏中空白处触摸操作菜单，捕获鼠标时拖动视角；玻璃按键/摇杆发送 GLFW 键码与鼠标按钮。顶部“编辑模式”复用完整布局编辑器，“保存”写入应用私有 controls/default.json。“返回”退出独立游戏进程；系统返回键发送 Esc。

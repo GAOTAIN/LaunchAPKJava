@@ -45,8 +45,10 @@ private fun RuntimeScreen(onExit: () -> Unit) {
     var hash by rememberSaveable { mutableStateOf("") }
     var installed by remember { mutableStateOf<InstalledRuntime?>(null) }
     var busy by remember { mutableStateOf(false) }
+    var downloading by remember { mutableStateOf(false) }
+    var javaMajor by rememberSaveable { mutableIntStateOf(8) }
     var preview by remember { mutableStateOf(false) }
-    var message by remember { mutableStateOf("导入适用于 $abi 的 Android/Bionic JRE；保留包内的 LICENSE 或 legal 目录。") }
+    var message by remember { mutableStateOf("可自动下载 Android Java，或导入自己的 Android/Bionic JRE ZIP。") }
     var diagnostic by remember { mutableStateOf<JvmDiagnosticClient?>(null) }
     LaunchedEffect(installer) {
         try { installed = withContext(Dispatchers.IO) { installer.inspect(abi) }
@@ -78,30 +80,45 @@ private fun RuntimeScreen(onExit: () -> Unit) {
                 GlassButton("返回", onExit, emphasized = false)
                 Text("运行环境", color = tokens.primaryText, style = MaterialTheme.typography.headlineSmall)
             }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf(8, 17, 21).forEach { major ->
+                    GlassButton("Java $major", { javaMajor = major }, enabled = !busy && !downloading, emphasized = javaMajor == major)
+                }
+            }
+            RuntimeAutoInstallCard(javaMajor, abi, enabled = !busy,
+                onInstalled = {
+                    scope.launch {
+                        try {
+                            installed = withContext(Dispatchers.IO) { installer.inspect(abi) }
+                            message = "Java ${installed?.version} 已就绪；可以执行 JVM 自检或返回启动页。"
+                        } catch (cancelled: CancellationException) { throw cancelled
+                        } catch (failure: Exception) { message = "安装后读取运行时失败：${failure.message}" }
+                    }
+                }, onActiveChanged = { downloading = it })
             GlassCard(Modifier.fillMaxWidth()) {
                 Text("Android JRE", color = tokens.primaryText, style = MaterialTheme.typography.titleLarge)
                 Text(installed?.let { "Java ${it.version} · ${it.abi}" } ?: "尚未安装运行时", color = tokens.primaryText)
                 Text("支持 Android Java 8 / 17 / 21 的 ZIP 包，不支持桌面 Windows、Linux 或 macOS JRE。ZIP 中的符号链接须预先展开为普通文件。", color = tokens.secondaryText)
                 OutlinedTextField(hash, { hash = it.take(64) }, label = { Text("运行时 ZIP 的 SHA-256") },
                     supportingText = { Text("与可信来源给出的校验值核对后导入；不随应用附带 JRE。") },
-                    enabled = !busy, singleLine = true, modifier = Modifier.fillMaxWidth())
+                    enabled = !busy && !downloading, singleLine = true, modifier = Modifier.fillMaxWidth())
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     GlassButton("导入 Android JRE ZIP", { picker.launch(arrayOf("application/zip", "application/octet-stream")) },
-                        enabled = !busy && hash.matches(Regex("[a-fA-F0-9]{64}")) && abi.isNotEmpty())
+                        enabled = !busy && !downloading && hash.matches(Regex("[a-fA-F0-9]{64}")) && abi.isNotEmpty())
                     GlassButton("运行 JVM 自检", {
                         busy = true; message = "正在独立进程创建 JVM 并读取 Java 系统属性…"
                         diagnostic = JvmDiagnosticClient(context) { success, result ->
                             busy = false
                             message = (if (success) "JVM 自检成功\n" else "") + result
                         }.also { it.run() }
-                    }, enabled = !busy && installed != null, emphasized = false)
+                    }, enabled = !busy && !downloading && installed != null, emphasized = false)
                     GlassButton("执行 Java main 自检", {
                         busy = true; message = "正在独立进程调用 Java main，验证 classpath 与 Unicode 参数…"
                         diagnostic = JvmDiagnosticClient(context, mainProbe = true) { success, result ->
                             busy = false
                             message = (if (success) "Java main 自检成功\n" else "") + result
                         }.also { it.run() }
-                    }, enabled = !busy && installed != null, emphasized = false)
+                    }, enabled = !busy && !downloading && installed != null, emphasized = false)
                 }
                 Text(message, color = tokens.secondaryText)
                 if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
@@ -114,7 +131,7 @@ private fun RuntimeScreen(onExit: () -> Unit) {
                             enabled = backend.available, emphasized = backend.available)
                     }
                 }
-                Text("GL4ES 已从锁定源码构建；此测试在真实 Surface 上通过 EGL 显示 OpenGL 三角形。游戏仍需 Android LWJGL/GLFW 适配与版本启动参数。", color = tokens.secondaryText)
+                Text("GL4ES 从锁定源码构建；此测试通过 EGL 显示 OpenGL 三角形。渲染自检不代表已通过 Minecraft 主菜单验收。", color = tokens.secondaryText)
                 GlassButton(if (preview) "关闭渲染自检" else "运行 GL4ES 渲染自检", { preview = !preview }, emphasized = false, enabled = !busy)
                 if (preview) Gl4esPreview()
             }

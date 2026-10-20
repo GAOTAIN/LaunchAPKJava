@@ -2,18 +2,49 @@ package com.launchapk.java.launcher
 
 import java.io.File
 import java.io.InputStream
+import java.io.FileOutputStream
+import java.nio.channels.OverlappingFileLockException
 import java.security.MessageDigest
 import java.util.Properties
 import java.util.UUID
+import java.util.concurrent.Semaphore
 import java.util.zip.ZipInputStream
 
 data class InstalledRuntime(val home: File, val jvm: File, val version: String, val abi: String)
 
 /** ZIPs must contain an Android/Bionic OpenJDK, with links resolved to regular files. */
 class RuntimeInstaller(private val filesDir: File, private val cacheDir: File) {
+    companion object { private val installationGate = Semaphore(1) }
     val home = File(filesDir, "runtimes/current")
-    fun inspect(abi: String): InstalledRuntime? = if (home.exists()) inspectHome(home, abi) else null
-    fun install(source: InputStream, expectedSha256: String, abi: String): InstalledRuntime {
+    fun inspect(abi: String): InstalledRuntime? = exclusive {
+        if (home.exists()) inspectHome(home, abi) else null
+    }
+    internal fun <T> exclusive(action: () -> T): T {
+        check(installationGate.tryAcquire()) { "另一个运行时检查或安装正在进行，请稍后重试" }
+        try {
+            val parent = home.parentFile!!
+            check(parent.isDirectory || parent.mkdirs())
+            FileOutputStream(File(parent, ".install.lock"), true).channel.use { channel ->
+                val lock = try { channel.tryLock() } catch (_: OverlappingFileLockException) { null }
+                check(lock != null) { "另一个运行时安装正在进行，请稍后重试" }
+                lock.use {
+                    // Recover an interrupted two-rename commit before inspecting or replacing a runtime.
+                    if (!home.exists()) {
+                        val backup = parent.listFiles().orEmpty().filter { it.isDirectory && it.name.startsWith(".previous-") }.maxByOrNull { it.lastModified() }
+                        if (backup != null) check(backup.renameTo(home)) { "不能恢复上次安装前的运行时" }
+                    }
+                    parent.listFiles().orEmpty().filter {
+                        it.isDirectory && it.name.matches(Regex("\\.(auto|install)-[a-f0-9-]{36}"))
+                    }.forEach { check(it.deleteRecursively()) { "不能清理中断安装留下的暂存目录" } }
+                    return action()
+                }
+            }
+        } finally { installationGate.release() }
+    }
+    fun install(source: InputStream, expectedSha256: String, abi: String): InstalledRuntime = exclusive {
+        installZip(source, expectedSha256, abi)
+    }
+    private fun installZip(source: InputStream, expectedSha256: String, abi: String): InstalledRuntime {
         require(expectedSha256.matches(Regex("[a-fA-F0-9]{64}"))) { "请填写来源可信的运行时 ZIP SHA-256" }
         require(abi in setOf("arm64-v8a", "x86_64")) { "当前只支持 64 位 Android 运行时" }
         check(cacheDir.isDirectory || cacheDir.mkdirs())
@@ -67,22 +98,29 @@ class RuntimeInstaller(private val filesDir: File, private val cacheDir: File) {
             val extracted = candidates.single()
             inspectHome(extracted, abi)
             File(extracted, "launchapk-runtime.properties").writeText("archive.sha256=${expectedSha256.lowercase()}\nabi=$abi\n")
-            val backup = File(parent, ".previous-${UUID.randomUUID()}")
-            val previous = home.exists()
-            if (previous) check(home.renameTo(backup)) { "不能替换现有运行时" }
-            try {
-                check(extracted.renameTo(home)) { "不能提交运行时安装" }
-            } catch (e: Exception) {
-                if (previous) check(backup.renameTo(home)) { "安装恢复失败，原运行时保留在 ${backup.name}" }
-                throw e
-            }
-            if (previous) backup.deleteRecursively()
-            return inspectHome(home, abi)
+            return publishPrepared(extracted, abi)
         } finally {
             archive.delete()
             if (stage.exists()) stage.deleteRecursively()
             // Existing runtime is untouched until extraction and validation have succeeded.
         }
+    }
+    /** Caller holds exclusive(). Inspect everything before replacing the previous installation. */
+    internal fun publishPrepared(directory: File, abi: String, expected: RuntimePackage? = null): InstalledRuntime {
+        val parent = home.parentFile!!
+        require(directory.canonicalFile.toPath().startsWith(parent.canonicalFile.toPath()) && directory.canonicalFile != home.canonicalFile)
+        val inspected = inspectHome(directory, abi)
+        if (expected != null) require(inspected.version == expected.version && runtimeJavaMajor(inspected.version) == expected.major) { "下载的 Java 版本与清单不一致" }
+        val backup = File(parent, ".previous-${UUID.randomUUID()}")
+        val previous = home.exists()
+        if (previous) check(home.renameTo(backup)) { "不能替换现有运行时" }
+        try { check(directory.renameTo(home)) { "不能提交运行时安装" }
+        } catch (failure: Exception) {
+            if (previous) check(backup.renameTo(home)) { "安装恢复失败，原运行时保留在 ${backup.name}" }
+            throw failure
+        }
+        if (previous) backup.deleteRecursively()
+        return inspected.copy(home = home, jvm = File(home, inspected.jvm.relativeTo(directory).path))
     }
     private fun inspectHome(directory: File, abi: String): InstalledRuntime {
         val properties = Properties()
@@ -90,7 +128,7 @@ class RuntimeInstaller(private val filesDir: File, private val cacheDir: File) {
         require(release.length() in 1..65536) { "缺少有效的 JRE release 文件" }
         release.reader(Charsets.UTF_8).use(properties::load)
         val version = properties.getProperty("JAVA_VERSION")?.trim('"') ?: error("缺少 Java 版本")
-        val major = if (version.startsWith("1.8.")) 8 else version.substringBefore('.').substringBefore('-').toIntOrNull()
+        val major = runtimeJavaMajor(version)
         require(major in setOf(8, 17, 21)) { "本轮支持 Android Java 8、17、21 运行时" }
         val libraries = listOf("lib/server/libjvm.so", "lib/aarch64/server/libjvm.so", "lib/amd64/server/libjvm.so", "jre/lib/aarch64/server/libjvm.so", "jre/lib/amd64/server/libjvm.so")
         val jvm = libraries.map { File(directory, it) }.firstOrNull { it.isFile } ?: error("没有找到 Android libjvm.so")

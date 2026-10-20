@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "provider": "FCL Android OpenJDK artifacts",
+  "license": "GPL-2.0-with-classpath-exception; see original LICENSE/legal in each archive",
+  "source": "https://github.com/FCL-Team/Android-OpenJDK-Build",
+  "packages": [
+    {
+      "major": 8,
+      "abi": "arm64-v8a",
+      "version": "1.8.0_442",
+      "archives": [
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre8/universal.tar.xz",
+          "size": 9540292,
+          "sha256": "150072cfa1d9e037c31e4bf9770aa5470ae46d0bfefd366b7ce5b2f940ede3f3"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre8/bin-arm64.tar.xz",
+          "size": 4347796,
+          "sha256": "deed9083a1047af1afaf2d7f1a2de4ae39fadf62c52881f075793e80274956cf"
+        }
+      ]
+    },
+    {
+      "major": 8,
+      "abi": "x86_64",
+      "version": "1.8.0_442",
+      "archives": [
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre8/universal.tar.xz",
+          "size": 9540292,
+          "sha256": "150072cfa1d9e037c31e4bf9770aa5470ae46d0bfefd366b7ce5b2f940ede3f3"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre8/bin-x86_64.tar.xz",
+          "size": 6182832,
+          "sha256": "37c3f7214ce3086575d7210baa25aee130d8db28c57739f598d24dfbfff32612"
+        }
+      ]
+    },
+    {
+      "major": 17,
+      "abi": "arm64-v8a",
+      "version": "17.0.10",
+      "archives": [
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre17/universal.tar.xz",
+          "size": 17070632,
+          "sha256": "d14ffda3b15b93a7000de26be864dd81b15f7eae8dbebe5ee71074973492a73b"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre17/bin-arm64.tar.xz",
+          "size": 4640448,
+          "sha256": "67f4510b0fa9c64ed851f4af924a5a8898538ada453f66d64542b72a0f04f92d"
+        }
+      ]
+    },
+    {
+      "major": 17,
+      "abi": "x86_64",
+      "version": "17.0.10",
+      "archives": [
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre17/universal.tar.xz",
+          "size": 17070632,
+          "sha256": "d14ffda3b15b93a7000de26be864dd81b15f7eae8dbebe5ee71074973492a73b"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre17/bin-x86_64.tar.xz",
+          "size": 6088424,
+          "sha256": "725587381bf043c66bb0f494abca4d4c5b1f67ff791ad0370e8252bd9257c7e6"
+        }
+      ]
+    },
+    {
+      "major": 21,
+      "abi": "arm64-v8a",
+      "version": "21.0.1",
+      "archives": [
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre21/universal.tar.xz",
+          "size": 18974588,
+          "sha256": "57bd118b3696d572257c5f4be1762379eb6a81361a17da1c4b0b9f7131dd6d7c"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre21/bin-arm64.tar.xz",
+          "size": 6847128,
+          "sha256": "9889de6d0526e0c9708ea18c6e7e41a7c3d5ae366a02524ae3a392274d3462b5"
+        }
+      ]
+    },
+    {
+      "major": 21,
+      "abi": "x86_64",
+      "version": "21.0.1",
+      "archives": [
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre21/universal.tar.xz",
+          "size": 18974588,
+          "sha256": "57bd118b3696d572257c5f4be1762379eb6a81361a17da1c4b0b9f7131dd6d7c"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/FCL-Team/FoldCraftLauncher/cd14d179ce22a806c9eda6353836e5abfa93cf30/FCL/src/main/jreAssets/app_runtime/java/jre21/bin-x86_64.tar.xz",
+          "size": 7847856,
+          "sha256": "1e1ccc34dd24f56efd2440aa80e658df5ac6efa2e3d866d8be0345d31284bef6"
+        }
+      ]
+    }
+  ]
+}

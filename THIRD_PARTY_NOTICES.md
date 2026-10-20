@@ -1,5 +1,13 @@
 # Third-party notices
 
+## Automatic Android OpenJDK acquisition
+
+The application now downloads the user's selected Android Java 8/17/21 runtime from FCL's fixed public artifact directory, commit `cd14d179ce22a806c9eda6353836e5abfa93cf30`. Six ABI/version combinations and each part's exact size/SHA-256 are recorded in `launcher/src/main/assets/runtime-catalog.json`. These are third-party Android builds, not an Oracle Android distribution; versions 1.8.0_442, 17.0.10 and 21.0.1 are deliberately pinned and are not described as current security patch releases. Runtime build project: https://github.com/FCL-Team/Android-OpenJDK-Build .
+
+The actual OpenJDK LICENSE/legal files include GPLv2 with the Classpath Exception plus individual notices. They are retained byte-for-byte during installation, including materialized internal links. No runtime binary or GPL application implementation is added to this repository/APK; downloads are made directly from the upstream artifact location. Redistributing/mirroring those artifacts would require a separate review of their exact source and distribution duties. See `docs/AUTOMATIC_RUNTIME.md` for boundaries.
+
+The original download/transaction logic is independent code. TAR handling references Apache Commons Compress 1.27.1, whose original LICENSE/NOTICE are packaged under launcher assets: https://github.com/apache/commons-compress/tree/rel/commons-compress-1.27.1 . XZ for Java 1.10 is under its 0BSD terms, copied unchanged from https://github.com/tukaani-project/xz-java/blob/v1.10/COPYING . Transitive Commons IO 2.16.1, Commons Codec 1.17.1 and Commons Lang 3.16.0 use Apache-2.0; their original LICENSE/NOTICE from the resolved Maven JARs also accompany the APK. WorkManager 2.10.1, Gson 2.11.0 and coroutines 1.10.2 reuse the already recorded versions and notices. Original project and third-party LICENSE files are not edited.
+
 ## Android game runtime integration
 
 See `docs/ANDROID_GAME_RUNTIME.md` for tested boundaries and rebuilding information. Exact download URLs and SHA-256 are in `nativebridge/third_party/game-runtime-lock.json`; original license assets are packaged under `assets/licenses` without changing their contents.

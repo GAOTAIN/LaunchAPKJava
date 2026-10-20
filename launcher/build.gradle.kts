@@ -34,5 +34,21 @@ tasks.withType<Test>().configureEach {
 }
 dependencies {
     implementation(project(":nativebridge"))
+    implementation(project(":core"))
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("androidx.work:work-runtime-ktx:2.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+    implementation("org.apache.commons:commons-compress:1.27.1")
+    implementation("org.tukaani:xz:1.10")
     testImplementation("junit:junit:4.13.2")
+}
+
+tasks.withType<Test>().configureEach {
+    systemProperty("launchapk.runtimeCatalog", file("src/main/assets/runtime-catalog.json").absolutePath)
+}
+tasks.register<JavaExec>("verifyRuntimeDownloads") {
+    dependsOn("compileDebugUnitTestKotlin", "compileDebugUnitTestJavaWithJavac")
+    classpath = tasks.named<Test>("testDebugUnitTest").get().classpath
+    mainClass.set("com.launchapk.java.launcher.RuntimeDownloadVerification")
+    args(rootProject.projectDir.absolutePath)
 }
